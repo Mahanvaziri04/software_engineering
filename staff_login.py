@@ -1,27 +1,29 @@
+# وارد کردن ابزارهای مورد نیاز از PyQt6
 from PyQt6.QtWidgets import (
     QWidget, QLabel, QLineEdit, QPushButton,
     QMessageBox, QVBoxLayout, QHBoxLayout
 )
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
-from data_base import DataBase
+from data_base import DataBase  # ایمپورت کلاس دیتابیس
 
-
+# کلاس فرم ورود کارکنان
 class StaffLogin(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
-        self.setup_ui()
+        self.setup_ui()  # راه‌اندازی رابط گرافیکی
 
     def setup_ui(self):
-        # Main container styling
+        # استایل کلی پس‌زمینه
         self.setStyleSheet("""
             background-color: #f5f7fa;
         """)
 
+        # چیدمان افقی بیرونی
         outer_layout = QHBoxLayout(self)
         fixed_left_widget = QWidget()
-        fixed_left_widget.setFixedSize(450, 500)
+        fixed_left_widget.setFixedSize(450, 500)  # اندازه مشخص پنل ورود
         fixed_left_widget.setStyleSheet("""
             background-color: white;
             border-radius: 15px;
@@ -33,7 +35,7 @@ class StaffLogin(QWidget):
         fixed_left_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         fixed_left_layout.setSpacing(25)
 
-        # Title label (Persian)
+        # عنوان فرم ورود
         self.label = QLabel("ورود کارکنان")
         self.label.setFont(QFont('nazanintar', 24, QFont.Weight.Bold))
         self.label.setStyleSheet("""
@@ -43,7 +45,7 @@ class StaffLogin(QWidget):
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         fixed_left_layout.addWidget(self.label)
 
-        # Input field style
+        # استایل فیلدهای ورودی
         input_style = """
             QLineEdit {
                 font-size: 14px;
@@ -64,18 +66,18 @@ class StaffLogin(QWidget):
             }
         """
 
-        # Form layout
+        # چیدمان فرم
         form_layout = QVBoxLayout()
         form_layout.setSpacing(20)
 
-        # Username field (Persian)
+        # فیلد نام کاربری
         self.username = QLineEdit()
         self.username.setFont(QFont('nazanintar', 14))
         self.username.setPlaceholderText("نام کاربری")
         self.username.setStyleSheet(input_style)
         form_layout.addWidget(self.username)
 
-        # Password field (Persian)
+        # فیلد رمز عبور
         self.password = QLineEdit()
         self.password.setFont(QFont('nazanintar', 14))
         self.password.setPlaceholderText("رمز عبور")
@@ -84,7 +86,7 @@ class StaffLogin(QWidget):
         self.password.returnPressed.connect(self.check_login)
         form_layout.addWidget(self.password)
 
-        # Button style
+        # استایل دکمه‌ها
         button_style = """
             QPushButton {
                 font-size: 14px;
@@ -104,11 +106,11 @@ class StaffLogin(QWidget):
             }
         """
 
-        # Buttons layout
+        # چیدمان دکمه‌ها
         buttons_layout = QHBoxLayout()
         buttons_layout.setSpacing(15)
 
-        # Back button (Persian)
+        # دکمه بازگشت به منو
         self.back_button = QPushButton("بازگشت")
         self.back_button.setFont(QFont('nazanintar', 14))
         self.back_button.setStyleSheet(button_style + """
@@ -122,7 +124,7 @@ class StaffLogin(QWidget):
         self.back_button.clicked.connect(lambda: self.parent.init_main_menu())
         buttons_layout.addWidget(self.back_button)
 
-        # Login button (Persian)
+        # دکمه ورود
         self.login_button = QPushButton("ورود")
         self.login_button.setFont(QFont('nazanintar', 14))
         self.login_button.setStyleSheet(button_style + """
@@ -140,7 +142,7 @@ class StaffLogin(QWidget):
         form_layout.addLayout(buttons_layout)
         fixed_left_layout.addLayout(form_layout)
 
-        # Add a subtle footer (Persian)
+        # پیام راهنما در پایین فرم
         footer_label = QLabel("برای مشکلات حساب کاربری با مدیر تماس بگیرید")
         footer_label.setFont(QFont('nazanintar', 10))
         footer_label.setStyleSheet("color: #7f8c8d;")
@@ -149,6 +151,7 @@ class StaffLogin(QWidget):
 
         outer_layout.addWidget(fixed_left_widget, 0, Qt.AlignmentFlag.AlignCenter)
 
+    # تابع بررسی ورود کاربر
     def check_login(self):
         db = DataBase("project_db.db")
         username = self.username.text()
